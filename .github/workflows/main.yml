@@ -52,4 +52,12 @@ jobs:
           container-registry-password: ${{ secrets.ACR_PASSWORD }}
           namespace: ${{ env.NAMESPACE }}
           force: true
-    
+     
+      - uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            kube-manifests/prod/custdemoprod_deployment.yaml
+            kube-manifests/prod/custdemoprod_service.yaml
+          images: |
+            ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest
+          namespace: ${{ env.NAMESPACE }}
