@@ -31,8 +31,8 @@ jobs:
       - uses: docker/login-action@v1
         with:
           registry: ${{ env.ACR_NAME }}.azurecr.io
-          username: ${{ prod.ACR_USERNAME }} 
-          password: ${{ prod.ACR_PASSWORD }}
+          username: ${{ secrets.ACR_USERNAME }} 
+          password: ${{ secrets.ACR_PASSWORD }}
     
       - run: |
           docker build . -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
@@ -48,8 +48,8 @@ jobs:
       - uses: azure/k8s-create-secret@v1
         with:
           container-registry-url: ${{ env.ACR_NAME }}.azurecr.io
-          container-registry-username: ${{ prod.ACR_USERNAME }}
-          container-registry-password: ${{ prod.ACR_PASSWORD }}
+          container-registry-username: ${{ secrets.ACR_USERNAME }}
+          container-registry-password: ${{ secrets.ACR_PASSWORD }}
           namespace: ${{ env.NAMESPACE }}
           force: true
      
