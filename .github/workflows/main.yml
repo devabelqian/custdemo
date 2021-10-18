@@ -29,7 +29,7 @@ jobs:
       - run: mvn -B package --file pom.xml
       - uses: azure/docker-login@v1
         with:
-           login-server: ${{ prod.secrets.ACR_USERNAME }}.azurecr.io
+           login-server: ${{ secrets.ACR_USERNAME }}.azurecr.io
            username: ${{ secrets.ACR_USERNAME }}
            password: ${{ secrets.ACR_PASSWORD }}
       - run: |
