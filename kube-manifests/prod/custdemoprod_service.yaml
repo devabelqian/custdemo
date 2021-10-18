@@ -5,7 +5,7 @@ metadata:
   labels:
     app: custdemoprod
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: custdemoprod
   ports:
