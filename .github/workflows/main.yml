@@ -3,10 +3,10 @@ name: ploy to prod namespace
 on:
   push:
     branches: 
-      - main
+      - prod
   pull_request:
     branches: 
-      - main
+      - prod
 
 env:
   ACR_NAME: openhackacr2021
