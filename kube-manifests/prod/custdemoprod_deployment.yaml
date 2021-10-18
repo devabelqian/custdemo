@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custdemoprod
+  labels:
+    app: custdemoprod
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: custdemoprod
+  template:
+    metadata:
+      labels:
+        app: custdemoprod
+    spec:
+      containers:
+        - name: custdemo
+          image: openhackacr2021.azurecr.io/custdemo:v1
+          imagePullPolicy: Always
+          args: ["--spring.profiles.active=$(DEPLOYMENT_ENV_KEY)"]
+          ports:
+            - containerPort: 8090
+          env:
+            - name: DEPLOYMENT_ENV_KEY
+              valueFrom:
+                configMapKeyRef:
+                   name: prodconfigmap
+                   key: DEPLOYMENT_ENV
+  
+   
+            
