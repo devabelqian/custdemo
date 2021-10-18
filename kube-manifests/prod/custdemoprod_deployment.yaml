@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: custdemo
-          image: openhackacr2021.azurecr.io/custdemo:v1
+          image: openhackacr2021.azurecr.io/custdemo:lastest
           imagePullPolicy: Always
           args: ["--spring.profiles.active=$(DEPLOYMENT_ENV_KEY)"]
           ports:
