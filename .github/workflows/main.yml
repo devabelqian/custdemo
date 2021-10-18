@@ -27,13 +27,11 @@ jobs:
             architecture: x64
 
       - run: mvn -B package --file pom.xml
-      
       - uses: azure/docker-login@v1
         with:
            login-server: ${{ env.ACR_NAME }}.azurecr.io
            username: ${{ secrets.ACR_USERNAME }}
            password: ${{ secrets.ACR_PASSWORD }}
-    
       - run: |
           docker build . -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
           docker tag  ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }} ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest 
