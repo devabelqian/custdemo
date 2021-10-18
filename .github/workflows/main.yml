@@ -17,39 +17,39 @@ env:
 
 jobs:
   build:
-      runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@prod
-    - uses: actions/setup-java@V2
-      with:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@prod
+      - uses: actions/setup-java@V2
+        with:
             java-version: '11'
             distribution: 'adopt'
             architecture: x64
 
-    - run: mvn -B package --file pom.xml
+      - run: mvn -B package --file pom.xml
       
-    - uses: azure/docker-login@v1
-      with:
+      - uses: azure/docker-login@v1
+        with:
           login-server: ${{ env.ACR_NAME }}.azurecr.io
           username: ${{ secrets.ACR_USERNAME }} 
           password: ${{ secrets.ACR_PASSWORD }}
     
-    - run: |
-        docker build . -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-        docker tag  ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }} ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest 
-        docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest
+      - run: |
+          docker build . -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          docker tag  ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }} ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest 
+          docker push ${{ env.ACR_NAME }}.azurecr.io/${{ env.APP_NAME }}:latest
     
-    - uses: azure/aks-set-context@v1
-      with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: ${{ env.AKS_NAME }}
-        resource-group: ${{ env.RESOURGROUP_NAME }}
+      - uses: azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: ${{ env.AKS_NAME }}
+          resource-group: ${{ env.RESOURGROUP_NAME }}
     
-    - uses: azure/k8s-create-secret@v1
-      with:
-        container-registry-url: ${{ env.ACR_NAME }}.azurecr.io
-        container-registry-username: ${{ secrets.ACR_USERNAME }}
-        container-registry-password: ${{ secrets.ACR_PASSWORD }}
-        namespace: ${{ env.NAMESPACE }}
-        force: true
+      - uses: azure/k8s-create-secret@v1
+        with:
+          container-registry-url: ${{ env.ACR_NAME }}.azurecr.io
+          container-registry-username: ${{ secrets.ACR_USERNAME }}
+          container-registry-password: ${{ secrets.ACR_PASSWORD }}
+          namespace: ${{ env.NAMESPACE }}
+          force: true
     
